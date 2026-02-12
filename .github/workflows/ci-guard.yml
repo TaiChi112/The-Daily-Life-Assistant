@@ -1,0 +1,28 @@
+name: 1. The Guard (CI)
+
+on: [push]
+
+jobs:
+  inspect-code:
+    name: 🕵️ Inspect Code
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+          
+      - name: Install Dependencies
+        run: bun install
+        
+      - name: Check Linting
+        # Next.js มี linter มาให้เเล้ว ถ้าโค้ดไม่สวย มันจะฟ้องตรงนี้
+        run: bun run lint
+
+      - name: Build Test
+        # ลองสั่ง Build ดู ถ้า Build ผ่าน เเปลว่าโค้ดไม่พัง
+        run: bun run build
