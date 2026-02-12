@@ -1,6 +1,8 @@
 name: 2. The Butler (Cron Job)
 
 on:
+  push:
+    branches: [ main ]
   # 1. ทำงานตามเวลา (Time-based Trigger)
   schedule:
     # ตั้งเวลา: 08:00 น. ประเทศไทย (UTC+7) = 01:00 น. UTC
