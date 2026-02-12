@@ -1,0 +1,46 @@
+name: 2. The Butler (Cron Job)
+
+on:
+  # 1. ทำงานตามเวลา (Time-based Trigger)
+  schedule:
+    # ตั้งเวลา: 08:00 น. ประเทศไทย (UTC+7) = 01:00 น. UTC
+    # GitHub ใช้เวลา UTC เสมอ ดังนั้นต้องลบ 7 ชั่วโมง
+    # Format: "นาที ชั่วโมง วัน เดือน วันในสัปดาห์"
+    - cron: '0 1 * * *' 
+  
+  # 2. ปุ่มกดสั่งทำงานทันที (Manual Trigger)
+  # สำคัญมาก! ใส่ไว้เพื่อกด Test ได้เลย ไม่ต้องรอถึง 8 โมงเช้า
+  workflow_dispatch:
+
+jobs:
+  wake-up-and-notify:
+    name: ☕ Morning Routine
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Message via LINE Messaging API
+        env:
+          # ดึงความลับจาก GitHub Secrets มาใส่ตัวแปร Environment
+          LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: |
+          # ใช้ curl ยิง Request ไปที่ LINE API (Method POST)
+          # สังเกตการใช้ตัวแปร $LINE_USER_ID ใน JSON
+          
+          curl -v -X POST https://api.line.me/v2/bot/message/push \
+          -H 'Content-Type: application/json' \
+          -H "Authorization: Bearer $LINE_ACCESS_TOKEN" \
+          -d '{
+              "to": "'"$LINE_USER_ID"'",
+              "messages": [
+                  {
+                      "type": "text",
+                      "text": "อรุณสวัสดิ์ครับเจ้านาย! ☀️\nนี่คือการทดสอบจาก GitHub Actions (The Butler)"
+                  },
+                  {
+                      "type": "sticker",
+                      "packageId": "446",
+                      "stickerId": "1988"
+                  }
+              ]
+          }'
