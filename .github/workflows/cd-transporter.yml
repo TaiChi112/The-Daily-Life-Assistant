@@ -3,7 +3,7 @@ name: 4. The Transporter (CD)
 # ทำงานเฉพาะตอน Push เข้า branch 'main' เท่านั้น
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
 
 jobs:
   build-and-push:
