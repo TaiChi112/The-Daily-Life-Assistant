@@ -1,0 +1,26 @@
+name: Polite Bot
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Thank You
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // อ่านข้อความที่คนพิมพ์มา
+            const commentBody = context.payload.comment.body.toLowerCase();
+            
+            // ถ้าเขาพูดว่า "ขอบคุณ" หรือ "thank"
+            if (commentBody.includes('thank') || commentBody.includes('ขอบคุณ')) {
+              // ให้บอทตอบกลับ
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: 'ด้วยความยินดีครับ! 🤖💙 (ตอบโดย GitHub Bot)'
+              })
+            }
