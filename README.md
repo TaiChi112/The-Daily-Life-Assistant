@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤖 The Daily Life Assistant
 
-## Getting Started
+โปรเจกต์นี้เริ่มต้นจากการเรียนรู้ Next.js และ Bun แต่หัวใจสำคัญคือการสาธิตการใช้ **GitHub Actions** เพื่อสร้างระบบ Automation แบบครบวงจร (CI/CD & Workflow Automation)
 
-First, run the development server:
+## 🚀 Features (GitHub Actions Workflows)
+
+โปรเจกต์นี้ประกอบด้วย 4 Workflows หลักที่เปรียบเสมือนทีมงานเบื้องหลัง:
+
+### 1. 👮 The Guard (CI - Continuous Integration)
+- **File:** `.github/workflows/ci-guard.yml`
+- **Trigger:** ทำงานทุกครั้งที่มีการ `Push` หรือ `Pull Request`
+- **Duty:** ตรวจสอบความถูกต้องของโค้ด (Linting) และทดสอบการ Build เพื่อป้องกันโค้ดที่ผิดพลาดหลุดเข้ามาในโปรเจกต์
+
+### 2. ☕ The Butler (Cron Job & Notification)
+- **File:** `.github/workflows/ci-butler.yml`
+- **Trigger:** ทำงานอัตโนมัติตามเวลาที่กำหนด (Schedule: 08:00 น.) หรือกดรันเอง (Manual Dispatch)
+- **Duty:** ดึงข้อมูลและส่งข้อความแจ้งเตือน "อรุณสวัสดิ์" ไปยังมือถือผ่าน **LINE Messaging API**
+
+### 3. 👩‍💼 The Secretary (Project Automation)
+- **File:** `.github/workflows/ci-secretary.yml`
+- **Trigger:** ทำงานเมื่อมี `Issue` หรือ `Pull Request` ใหม่ถูกเปิดขึ้น
+- **Duty:** ต้อนรับผู้มาเยือน, แปะป้าย Label (`triage`), และคอมเมนต์ตอบกลับอัตโนมัติ เพื่อจัดการโปรเจกต์ให้เป็นระเบียบ
+
+### 4. 🚚 The Transporter (CD - Continuous Deployment)
+- **File:** `.github/workflows/cd-transporter.yml`
+- **Trigger:** ทำงานเมื่อมีการ `Push` เข้าสู่ Branch `main`
+- **Duty:** สร้าง Docker Image จาก Source Code และ Push ขึ้นไปยัง **Docker Hub** เพื่อเตรียมพร้อมสำหรับการ Deploy บน Server จริง
+
+---
+
+## 🛠️ Setup & Secrets Configuration
+
+เพื่อให้ Workflows ทั้งหมดทำงานได้ จำเป็นต้องตั้งค่า **GitHub Secrets** ดังนี้ (ไปที่ Settings > Secrets and variables > Actions):
+
+### สำหรับ LINE Notification (The Butler)
+| Secret Name         | คำอธิบาย                            | วิธีหา                                                                                           |
+| :------------------ | :-------------------------------- | :--------------------------------------------------------------------------------------------- |
+| `LINE_ACCESS_TOKEN` | Channel Access Token (Long-lived) | [LINE Developers Console](https://developers.line.biz/) > Messaging API > Channel access token |
+| `LINE_USER_ID`      | Your User ID (ขึ้นต้นด้วย U...)       | [LINE Developers Console](https://developers.line.biz/) > Basic settings > Your user ID        |
+
+### สำหรับ Docker Hub (The Transporter)
+| Secret Name          | คำอธิบาย                            | วิธีหา                                                                                          |
+| :------------------- | :-------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `DOCKERHUB_USERNAME` | Username ของ Docker Hub           | ดูที่มุมขวาบนของเว็บ Docker Hub                                                                    |
+| `DOCKERHUB_TOKEN`    | Access Token (ห้ามใช้ Password จริง) | [Docker Hub Settings](https://hub.docker.com/settings/security) > Security > New Access Token |
+
+---
+
+## 💻 Local Development
+
+โปรเจกต์นี้ใช้ **Bun** เป็น Runtime หลัก
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+# 1. Clone repo
+git clone [https://github.com/your-username/the-daily-life-assistant.git](https://github.com/your-username/the-daily-life-assistant.git)
+
+# 2. Install dependencies
+bun install
+
+# 3. Run development server
 bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
