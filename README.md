@@ -26,6 +26,28 @@
 - **Trigger:** ทำงานเมื่อมีการ `Push` เข้าสู่ Branch `main`
 - **Duty:** สร้าง Docker Image จาก Source Code และ Push ขึ้นไปยัง **Docker Hub** เพื่อเตรียมพร้อมสำหรับการ Deploy บน Server จริง
 
+### 5. 🤖 The Polite Bot (Comment Automation)
+- **File:** `.github/workflows/bot-reply.yml`
+- **Trigger:** เมื่อมีคนคอมเมนต์ใน Issue
+- **Duty:** ตรวจสอบข้อความ และตอบ "ด้วยความยินดีครับ 🤖💙" อัตโนมัติ
+
+### 6. 🎉 The PR Greeter (PR Automation)
+- **File:** `.github/workflows/pr-team-welcome.yml`
+- **Trigger:** เมื่อมี Pull Request ใหม่
+- **Duty:** ต้อนรับ และแท็ก Reviewers (`@TaiChi112` `@NeoChi112`) โดยอัตโนมัติ
+
+### 7. 🤖 The Auto-Updater (Dependency Management)
+- **File:** `.github/dependabot.yml`
+- **Trigger:** ทุกวันจันทร์ 09:00 (เวลาไทย)
+- **Duty:** ตรวจสอบและอัปเดต npm dependencies โดยอัตโนมัติ เปิด PR เมื่อมี update
+
+---
+
+## 📋 Configuration Files
+
+- **`.github/CODEOWNERS`** - กำหนด Code Reviewers (บังคับให้ 2 คนรีวิวทุก PR)
+- **`.github/instructions/copilot-instructions.md`** - Guidelines สำหรับ Copilot AI
+- **`.github/dependabot.yml`** - ตั้งค่า Dependabot สำหรับการอัปเดต dependencies อัตโนมัติ
 ---
 
 ## 🛠️ Setup & Secrets Configuration
@@ -59,3 +81,6 @@ bun install
 
 # 3. Run development server
 bun dev
+
+```
+
