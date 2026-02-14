@@ -1,0 +1,26 @@
+name: PR Team Welcome
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  welcome-and-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Comment & Tag Reviewers
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          # กำหนดชื่อคนที่จะให้รีวิวตรงนี้ (แก้ได้ตามใจชอบ)
+          REVIEWERS: "@TaiChi112 @NeoChi112" 
+        run: |
+          # ใช้ gh CLI สั่งคอมเมนต์
+          gh pr comment "$PR_URL" --body "👋 สวัสดีครับ! ขอบคุณที่ส่ง PR เข้ามานะ
+          
+          ระบบได้รับเรื่องแล้วครับ! 
+          รบกวน Reviewers ทีมเทพ: $REVIEWERS ช่วยตรวจสอบด้วยครับ 🚀
+          
+          (ข้อความอัตโนมัติจาก GitHub Actions)"
